@@ -1,0 +1,50 @@
+package org.application;
+
+//springframework 
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
+import org.springframework.transaction.annotation.Transactional;
+
+//Other external libraries import
+import org.json.JSONObject;
+import org.json.JSONArray;
+
+//Internal application imports
+import org.application.model.Student;
+import org.application.repository.StudentRepository;
+
+@SpringBootApplication
+public class CommandlineApp {
+    public static void main(String[] args) {
+        SpringApplication.run(CommandlineApp.class, args);
+    }
+
+    @Bean
+    @Transactional
+    CommandLineRunner run(StudentRepository repo){
+        return args->{
+        String json_string = """
+        {
+            "student_array":[
+                {"name":"Ahmad","course_id":"MEC200"},
+                {"name":"Julia","course_id":"MEC700"},
+                {"name":"Rithor","course_id":"MEC200"}
+            ]
+        }
+        """;
+        JSONObject student_details = new JSONObject(json_string);
+        JSONArray student_array = student_details.getJSONArray("student_array");
+        for(int i = 0, size= student_array.length();i <size;i++){
+            JSONObject details = student_array.getJSONObject(i);
+            String nameValue = details.optString("name");
+            String courseIdValue = details.optString("course_id");
+            Student student = new Student(nameValue, courseIdValue);
+            repo.save(student);
+            }
+        System.out.println("Successfully save all students");
+        };
+        
+    }
+}

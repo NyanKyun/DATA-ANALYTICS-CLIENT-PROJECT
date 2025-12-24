@@ -1,0 +1,11 @@
+Gradle command : 
+./gradlew test <-- for running test
+./gradlew bootRun <-- for running build run of application / web application
+./gradlew clean build --refresh-dependencies <--when dependencies are not updating correctly , refresh build cleanly and then reload IDE
+
+Controller → handles requests/responses
+Service → business logic
+Repository → talks to the database
+Mocks/Tests → simulate behavior to check that everything works
+Optional → wraps a value that might be absent
+MockMvc → tests the endpoints without running a real server
